@@ -1,0 +1,26 @@
+# Environment
+.venv
+venv/
+.env
+env/
+
+# DB
+*.sqlite3
+
+# Cache and logs
+__pycache__/
+*.log
+
+# vscode
+.vscode/
+
+# Media and staticfiles
+media/*
+!media/.gitkeep
+staticfiles/*
+!staticfiles/.gitkeep
+
+# Mac
+.DS_Store
+._.DS_Store
+.AppleDouble
