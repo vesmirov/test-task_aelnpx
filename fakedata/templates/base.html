@@ -1,0 +1,25 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        
+        <title>{% block title %}Schemas{% endblock title %} | FakeCSV</title>
+    </head>
+
+    <body class="body">
+        {% include 'include/nav.html' %}
+
+        <main class="main container">
+            <div class="container">
+                {% block header %}Data schemas{% endblock header %}
+                {% block content %}{% endblock content %}
+            </div>
+        </main>
+        
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    </body>
+</html>
