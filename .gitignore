@@ -1,0 +1,16 @@
+# Environment
+.venv
+venv/
+.env
+env/
+
+# Cache and logs
+__pycache__/
+*.log
+
+# vscode
+.vscode/
+
+# Media
+media/*
+!media/.gitkeep
