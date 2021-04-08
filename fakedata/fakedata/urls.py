@@ -6,3 +6,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('users.urls')),
 ]
+
+urlpatterns += [
+    path('', include('schemas.urls')),
+]

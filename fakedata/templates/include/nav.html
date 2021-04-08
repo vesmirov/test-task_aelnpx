@@ -3,7 +3,7 @@
         <a class="navbar-brand" href="#">FakeCSV</a>
         <nav class="my-2 my-md-0 mr-md-3">
             {% if user.is_authenticated %}
-                <span class="p-2 text-black-50 fw-light text-decoration-none">Hello, <b>{{ user.username }}</b></span>
+                <span class="p-2 text-black-50 fw-light text-decoration-none">Hello, <span class="fw-bold">{{ user.username }}</span></span>
                 <a class="p-2 text-black-50 fw-light text-decoration-none" href="{% url 'logout' %}">Logout</a>
             {% else %}
                 <a class="p-2 text-black-50 fw-light text-decoration-none" href="{% url 'login' %}">Login</a>
