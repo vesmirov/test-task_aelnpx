@@ -1,13 +1,14 @@
 <nav class="navbar navbar-light px-5" style="background-color: #f7f7f9;">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">FakeCSV</a>
-        <nav class="my-2 my-md-0 mr-md-3">
-            {% if user.is_authenticated %}
-                <span class="p-2 text-black-50 fw-light text-decoration-none">Hello, <span class="fw-bold">{{ user.username }}</span></span>
-                <a class="p-2 text-black-50 fw-light text-decoration-none" href="{% url 'logout' %}">Logout</a>
-            {% else %}
-                <a class="p-2 text-black-50 fw-light text-decoration-none" href="{% url 'login' %}">Login</a>
-            {% endif %}
-        </nav>
-    </div>
+  <div class="container-fluid px-3">
+    <a class="navbar-brand" href="{% url 'index' %}">FakeCSV</a>
+
+    <nav class="my-2 my-md-0 mr-md-3">
+      {% if user.is_authenticated %}
+        <span class="p-2 text-black-50 fw-light text-decoration-none">Hello, <span class="fw-bold">{{ user.username }}</span></span>
+        <a class="p-2 text-black-50 fw-light text-decoration-none" href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a class="p-2 text-black-50 fw-light text-decoration-none" href="{% url 'login' %}">Login</a>
+      {% endif %}
+    </nav>
+  </div>
 </nav>

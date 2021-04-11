@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load user_filters %}
+
+{% block title %}{{ schema.title }}{% endblock title %}
+{% block header %}{% endblock header %}
+
+{% block content %}
+  <div class="row mb-4">
+    <div class="col-6">
+      <p class="display-6 mb-0">Configure schema</p>
+    </div>
+    <dif class="col-3 ps-0 pe-2 text-end">
+      <button class="btn btn-success" type="submit" form="#">Submit</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <p class="d-grid col-3 mb-1">Name</p>
+    <p class="d-grid col-2 mb-1 pe-0 text-end"><a href="{% url 'edit_schema' pk=schema.id %}" class="text-muted text-decoration-none">Edit schema</a></p>
+  </div>
+
+  <div class="card col-5 mb-3 text-muted bg-light">
+    <div class="card-body p-2">
+      {{ schema.title }}
+    </div>
+  </div>
+
+  <p class="d-grid col-5 mb-1">Column separator</p>
+  <div class="card col-5 mb-3 text-muted bg-light">
+    <div class="card-body p-2">
+      {{ schema.get_separator_display }}
+    </div>
+  </div>
+
+  <p class="d-grid col-5 mb-1">String character</p>
+  <div class="card col-5 mb-5 text-muted bg-light">
+    <div class="card-body p-2">
+      {{ schema.get_string_character_display }}
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-6">
+      <p class="display-6 mb-0">Columns</p>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-9">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Column name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Range</th>
+            <th scope="col">Sentences</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for column in schema.columns.all %}
+            <tr>
+              <th scope="row">{{ column.order }}</th>
+              <td>{{ column.title }}</td>
+              <td>{{ column.get_column_type_display }}</td>
+              {% if column.is_integer %}
+                <td>{{ column.integer_from }} to {{ column.integer_to }}</td>
+              {% else %}
+                <td></td>
+              {% endif %}
+              {% if column.is_text %}
+                <td>{{ column.text_len }}</td>
+              {% else %}
+                <td></td>
+              {% endif %}
+              <td>
+                <form method="POST" action="{% url 'delete_column' schema.id column.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-link text-decoration-none text-danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    {% include 'include/columns_form.html' with schema=schema %}
+  </div>
+{% endblock content %}

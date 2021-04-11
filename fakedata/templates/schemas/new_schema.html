@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load user_filters %}
+
+{% block title %}New schema{% endblock title %}
+{% block header %}{% endblock header %}
+
+{% block content %}
+  <div class="row mb-4">
+    <div class="col-6">
+      <p class="display-6 mb-0">New schema</p>
+    </div>
+    <dif class="col-3 ps-0 pe-2 text-end">
+        {% if edit %}
+          <button class="btn btn-success" type="submit" form="schema-create-form">Update</button>
+        {% else %}
+          <button class="btn btn-success" type="submit" form="schema-create-form">Create</button>
+        {% endif %}
+    </div>
+  </div>
+
+  <div class="row">
+    {% if form.errors %}
+    {% for error in form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error|escape }}
+        </div>
+    {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data" id="schema-create-form">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group row">
+          <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+          <div class="col-5 mb-3">
+            {% if field|is_select %}
+              {{ field|addclass:"form-select" }}
+            {% else %}
+              {{ field|addclass:"form-control" }}
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </form>
+  </div>
+{% endblock content %}

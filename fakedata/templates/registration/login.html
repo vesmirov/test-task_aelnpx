@@ -3,43 +3,43 @@
 
 {% block title %}Login{% endblock %}
 {% block header %}{% endblock header %}
+
 {% block content %}
-
-<div class="row justify-content-center">
-  <div class="col-md-6 p-5">
-    <div class="card py-5">
-      <div class="card-body">
-        <h1 class="card-title mb-5 text-center fw-light">Login</h5>
-        {% if form.errors %}
-          <div class="alert alert-danger" role="alert">
-            Incorrect username or/and password
-          </div>
-        {% endif %}
-
-        {% if next %}            
-          <div class="alert alert-info" role="alert">
-            Please login first
-          </div>
-        {% endif %}
-
-        <form method="POST" action="{% url 'login' %}">
-          {% csrf_token %}
-          <input type="hidden" name="next" value="{{ next }}">
-
-          {% for field in form %}
-            <div class="mb-3 col-8 mx-auto">
-                {{ field|addclass:"form-control" }}
+  <div class="row justify-content-center">
+    <div class="col-md-6 p-5">
+      <div class="card py-5">
+        <div class="card-body">
+          <h1 class="card-title mb-5 text-center fw-light">Login</h5>
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              Incorrect username or/and password
             </div>
-          {% endfor %}
+          {% endif %}
 
-          <div class="d-grid mx-auto col-8 mb-5 justify-content-md-end">        
-              <button type="submit" class="btn btn-primary">
-                Login
-              </button>
-          </div>
-        </form>
+          {% if next %}            
+            <div class="alert alert-warning mb-3 col-8 mx-auto" role="alert">
+              Please login first
+            </div>
+          {% endif %}
+
+          <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+
+            {% for field in form %}
+              <div class="mb-3 col-8 mx-auto">
+                  {{ field|addclass:"form-control" }}
+              </div>
+            {% endfor %}
+
+            <div class="d-grid mx-auto col-8 mb-5 justify-content-md-end">        
+                <button type="submit" class="btn btn-primary">
+                  Login
+                </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

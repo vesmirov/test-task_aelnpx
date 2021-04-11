@@ -1,8 +1,46 @@
 {% extends 'base.html' %}
 
 {% block title %}Schemas{% endblock title %}
-{% block header %}Data schemas{% endblock header %}
 
 {% block content %}
-    <h1>Got it!</h1>
+  <div class="row mb-4">
+    <div class="col-6">
+      <p class="display-6 mb-0">Data schemas</p>
+    </div>
+    <dif class="col-3 ps-0 pe-2 text-end">
+      <a class="btn btn-success" href="{% url 'new_schema' %}">New schema</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-9">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Modified</th>
+            <th scope="col">Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for obj in object_list %}
+            <tr class="align-middle">
+              <th scope="row" class="text-center">{{ forloop.counter }}</th>
+              <td>{{ obj.title }}</td>
+              <td>{{ obj.modified }}</td>
+              <td>
+                <a href="#" class="btn btn-sm btn-link text-decoration-none text-primary d-inline">Datasets</a>
+                <a href="{% url 'configure_schema' pk=obj.id %}" class="btn btn-sm btn-link text-decoration-none text-secondary d-inline">Configure</a>
+                <form method="POST" action="{% url 'delete_schema' pk=obj.id %}" class="d-inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-link text-decoration-none text-danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 {% endblock content %}

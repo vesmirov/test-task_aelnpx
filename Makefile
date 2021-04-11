@@ -12,3 +12,6 @@ collectstatic:
 
 createsuperuser:
 	poetry run python fakedata/manage.py createsuperuser
+
+shell:
+	poetry run python fakedata/manage.py shell

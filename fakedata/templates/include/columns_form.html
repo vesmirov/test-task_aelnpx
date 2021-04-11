@@ -1,0 +1,55 @@
+{% load user_filters %}
+
+{% if form.errors %}
+  {% for error in form.errors %}
+      <div class="alert alert-danger" role="alert">
+          {{ error|escape }}
+      </div>
+  {% endfor %}
+{% endif %}
+
+<div class="card col-6">
+  <div class="card-body">
+    <form method="POST" action="{% url 'new_column' schema.id %}" enctype="multipart/form-data" id="schema-create-form" class="row">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-9 mb-3">
+            <label for="{{ form.title.id_for_label }}" class="form-label">{{ form.title.label }}</label>
+            {{ form.title|addclass:"form-control" }}
+        </div>
+        <div class="col-3 mb-3">
+          <label for="{{ form.order.id_for_label }}" class="form-label">{{ form.order.label }}</label>
+          {{ form.order|addclass:"form-control" }}
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-6 mb-3">
+          <label for="{{ form.column_type.id_for_label }}" class="form-label">{{ form.column_type.label }}</label> <span class="text-muted">*</span>
+          {{ form.column_type|addclass:"form-control form-select" }}
+        </div>
+        <div class="col-2 mb-3">
+          <label for="{{ form.integer_from.id_for_label }}" class="form-label">{{ form.integer_from.label }}</label>
+          {{ form.integer_from|addclass:"form-control" }}
+        </div>
+        <div class="col-2 mb-3">
+          <label for="{{ form.integer_to.id_for_label }}" class="form-label">{{ form.integer_to.label }}</label>
+          {{ form.integer_to|addclass:"form-control" }}
+        </div>
+        <div class="col-2 mb-3">
+          <label for="{{ form.text_len.id_for_label }}" class="form-label">{{ form.text_len.label }}</label>
+          {{ form.text_len|addclass:"form-control" }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6 mb-3">
+          <small id="{{ form.column_type.id_for_label }}-help" class="form-text text-muted">{{ form.column_type.help_text|safe }}</small>
+        </div>
+        <div class="col-6 mb-3 text-end align-bottom">
+          <button class="btn btn-outline-success" type="submit">Add column</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

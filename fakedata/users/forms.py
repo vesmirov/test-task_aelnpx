@@ -3,11 +3,17 @@ from django.contrib.auth.forms import AuthenticationForm, UsernameField
 
 
 class LoginForm(AuthenticationForm):
-    username = UsernameField(widget=forms.TextInput(attrs={'autofocus': True}))
+    username = UsernameField(widget=forms.TextInput(attrs={
+        'autofocus': True,
+        'placeholder': 'Username',
+    }))
     password = forms.CharField(
         label="Password",
         strip=False,
-        widget=forms.PasswordInput(attrs={'autocomplete': 'current-password'}),
+        widget=forms.PasswordInput(attrs={
+            'autocomplete': 'current-password',
+            'placeholder': 'Password',
+        }),
     )
 
     error_messages = {
