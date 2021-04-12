@@ -20,7 +20,6 @@ fakedata/media/csv/*
 fakedata/staticfiles/*
 !fakedata/staticfiles/.gitkeep
 
-
 # Mac
 .DS_Store
 ._.DS_Store

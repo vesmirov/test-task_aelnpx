@@ -15,3 +15,6 @@ createsuperuser:
 
 shell:
 	poetry run python fakedata/manage.py shell
+
+lint:
+	poetry run flake8

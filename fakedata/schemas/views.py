@@ -1,11 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import (
-    get_list_or_404,
-    get_object_or_404,
-    redirect,
-    render,
-)
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.http import FileResponse
 from django.views import View
@@ -13,7 +8,6 @@ from django.views.generic import (
     RedirectView,
     ListView,
     CreateView,
-    DeleteView,
     DetailView,
     UpdateView,
 )
@@ -32,7 +26,7 @@ class IndexView(RedirectView):
 class SchemaListView(LoginRequiredMixin, ListView):
     model = Schema
     template_name = 'schemas/schemas.html'
-    
+
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(user=self.request.user)
@@ -70,10 +64,9 @@ class SchemaDeleteView(LoginRequiredMixin, View):
         schema = get_object_or_404(Schema, id=kwargs['pk'])
         schema.delete()
         return redirect('schemas')
-    
+
     def get(self, request, **kwargs):
         return redirect('index')
-
 
 
 class SchemaDetailView(LoginRequiredMixin, DetailView):
@@ -100,7 +93,7 @@ class ColumnCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         pk = self.kwargs['pk']
         success_url = reverse_lazy('configure_schema', kwargs={'pk': pk})
-        return success_url        
+        return success_url
 
 
 class ColumnDeleteView(LoginRequiredMixin, View):
@@ -108,7 +101,7 @@ class ColumnDeleteView(LoginRequiredMixin, View):
         column = get_object_or_404(Column, id=kwargs['col_pk'])
         column.delete()
         return redirect('configure_schema', pk=kwargs['pk'])
-    
+
     def get(self, request, **kwargs):
         return redirect('index')
 
@@ -162,12 +155,14 @@ class DatasetDeleteView(LoginRequiredMixin, View):
         dataset = get_object_or_404(Dataset, id=kwargs['ds_pk'])
         dataset.delete()
         return redirect('datasets', pk=kwargs['pk'])
-    
+
     def get(self, request, **kwargs):
         return redirect('index')
 
+
 """
-    ДОБАВИТЬ ПРОВЕРКУ НА ЮЗЕРА (сейчас пользователь может выйти на чужие айдишники)
+    ДОБАВИТЬ ПРОВЕРКУ НА ЮЗЕРА
+    (сейчас пользователь может выйти на чужие айдишники)
     СПРЯТАТЬ SuccessUrl в МИКСИН
     ПОЧИТАТЬ ПО ДИСПАТЧ -- это поможет
     его нужно будет спрятать именно туда

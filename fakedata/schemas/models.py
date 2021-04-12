@@ -22,7 +22,8 @@ class Schema(models.Model):
         VBAR = '|', 'Vertical bar (|)'
         CARET = '^', 'Caret (^)'
 
-    user = models.ForeignKey(User,
+    user = models.ForeignKey(
+        User,
         related_name='schemas',
         on_delete=models.CASCADE,
     )
@@ -94,7 +95,7 @@ class Column(models.Model):
     @property
     def is_integer(self):
         return self.column_type == self.ColumnType.INTEGER
-    
+
     @property
     def is_text(self):
         return self.column_type == self.ColumnType.TEXT

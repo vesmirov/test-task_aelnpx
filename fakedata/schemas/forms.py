@@ -13,6 +13,7 @@ class SchemaForm(forms.ModelForm):
             'string_character': 'String character',
         }
 
+
 class ColumnForm(forms.ModelForm):
     class Meta:
         model = Column
