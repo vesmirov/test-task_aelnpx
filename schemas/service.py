@@ -65,6 +65,6 @@ def generate_csv(dataset):
             fake_row = get_fake_row(data['columns'])
             writer.writerow(fake_row)
 
-        filename = CSV_PATH + '/' + data['name'] + '.csv'
         dataset.status = dataset.Status.READY
+        filename = CSV_PATH + '/' + data['name'] + '.csv'
         dataset.csv_file.save(filename, File(file))

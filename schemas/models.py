@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 
-from schemas.service import generate_csv
+from schemas.tasks import start_generator
 
 User = get_user_model()
 
@@ -153,4 +153,4 @@ def post_save_generate_csv(sender, instance, created, **kwargs):
     Generates csv for every just created Dataset object
     '''
     if created:
-        generate_csv(instance)
+        start_generator.delay(instance.id)

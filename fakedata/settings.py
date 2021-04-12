@@ -13,7 +13,10 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = [
-    '*',
+    '127.0.0.1',
+    'localhost',
+    'web',
+    os.getenv('HOST'),
 ]
 
 
@@ -27,6 +30,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'faker',
+    'celery',
 ]
 
 MIDDLEWARE = [
@@ -108,4 +114,13 @@ LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/auth/login/'
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+REDIS_HOST = '0.0.0.0'
+REDIS_PORT = '6379'
+
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

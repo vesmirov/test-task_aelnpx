@@ -1,20 +1,23 @@
 runserver:
-	poetry run python fakedata/manage.py runserver
+	poetry run python manage.py runserver
+
+gunicorn:
+	poetry run gunicorn fakedata.wsgi:application -b 0:8000
 
 makemigrations:
-	poetry run python fakedata/manage.py makemigrations
+	poetry run python manage.py makemigrations
 
 migrate:
-	poetry run python fakedata/manage.py migrate
+	poetry run python manage.py migrate
 
 collectstatic:
-	poetry run python fakedata/manage.py collectstatic --no-input
+	poetry run python manage.py collectstatic --no-input
 
 createsuperuser:
-	poetry run python fakedata/manage.py createsuperuser
+	poetry run python manage.py createsuperuser
 
 shell:
-	poetry run python fakedata/manage.py shell
+	poetry run python manage.py shell
 
 lint:
 	poetry run flake8

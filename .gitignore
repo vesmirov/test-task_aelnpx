@@ -15,10 +15,10 @@ __pycache__/
 .vscode/
 
 # Media and staticfiles
-fakedata/media/csv/*
-!fakedata/media/csv/.gitkeep
-fakedata/staticfiles/*
-!fakedata/staticfiles/.gitkeep
+media/csv/*
+!media/csv/.gitkeep
+staticfiles/*
+!staticfiles/.gitkeep
 
 # Mac
 .DS_Store

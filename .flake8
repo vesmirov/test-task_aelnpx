@@ -2,7 +2,7 @@
 ignore = W605
 exclude = 
     .venv/*,
-    fakedata/schemas/migrations/*,
-    fakedata/migrations/*,
+    schemas/migrations/*,
+    migrations/*,
     settings.py
 max-complexity = 10
