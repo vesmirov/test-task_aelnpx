@@ -1,6 +1,6 @@
 from django import forms
 
-from schemas.models import Schema, Column
+from schemas.models import Schema, Column, Dataset
 
 
 class SchemaForm(forms.ModelForm):
@@ -36,3 +36,10 @@ class ColumnForm(forms.ModelForm):
             'column_type': 'For Integer: specify range<br>'
                            'For Text: specify the number of sentences'
         }
+
+
+class DatasetForm(forms.ModelForm):
+    class Meta:
+        model = Dataset
+        fields = ('rows',)
+        labels = {'rows': 'Rows'}

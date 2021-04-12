@@ -32,8 +32,24 @@ urlpatterns = [
         views.ColumnDeleteView.as_view(),
         name='delete_column'
     ),
+    path(
+        'schemas/<int:pk>/datasets/',
+        views.DatasetListView.as_view(),
+        name='datasets'
+    ),
+    path(
+        'schemas/<int:pk>/datasets/create/',
+        views.DatasetCreateView.as_view(),
+        name='new_dataset'
+    ),
+    path(
+        'schemas/<int:pk>/datasets/<int:ds_pk>/download/',
+        views.DatasetDownloadView.as_view(),
+        name='download_dataset'
+    ),
+    path(
+        'schemas/<int:pk>/datasets/<int:ds_pk>/delete/',
+        views.DatasetDeleteView.as_view(),
+        name='delete_dataset'
+    ),
 ]
-
-# schemas/<int:schema_id>/datasets/
-# schemas/<int:schema_id>/datasets/generate/
-# schemas/<int:schema_id>/datasets/<int: dataset_id>/download/

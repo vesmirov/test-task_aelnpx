@@ -11,4 +11,10 @@ class SchemaAdmin(admin.ModelAdmin):
 @admin.register(models.Column)
 class ColumnAdmin(admin.ModelAdmin):
     list_display = ('pk', 'title', 'column_type')
-    # ordering = ('column_type',)
+    ordering = ('column_type',)
+
+
+@admin.register(models.Dataset)
+class DatasetAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'created', 'rows', 'status')
+    ordering = ('created', 'rows')

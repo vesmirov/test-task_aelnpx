@@ -1,7 +1,11 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.contrib.auth import get_user_model
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
+
+from schemas.service import generate_csv
 
 User = get_user_model()
 
@@ -28,12 +32,12 @@ class Schema(models.Model):
     separator = models.CharField(
         choices=Separator.choices,
         default=Separator.COMMA,
-        max_length=20,
+        max_length=1,
     )
     string_character = models.CharField(
         choices=QuoteChar.choices,
         default=QuoteChar.DQUOTE,
-        max_length=20
+        max_length=1
     )
 
     class Meta:
@@ -58,10 +62,10 @@ class Column(models.Model):
         ADDRESS = 'ADDRESS', 'Address'
         DATE = 'DATE', 'Date'
 
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=75)
     created = models.DateTimeField(auto_now_add=True)
     order = models.PositiveIntegerField(
-        validators=[MaxValueValidator(100)]
+        validators=[MaxValueValidator(200)]
     )
     column_type = models.CharField(
         verbose_name='Type',
@@ -101,3 +105,51 @@ class Column(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Dataset(models.Model):
+    class Status(models.TextChoices):
+        READY = 'R', 'Ready'
+        PROCESSING = 'P', 'Processing'
+        FAIL = 'F', 'Fail'
+
+    created = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(
+        choices=Status.choices,
+        default=Status.PROCESSING,
+        max_length=1
+    )
+    schema = models.ForeignKey(
+        Schema,
+        related_name='datasets',
+        on_delete=models.CASCADE
+    )
+    rows = models.PositiveIntegerField(
+        default=100,
+        validators=[MinValueValidator(1)]
+    )
+    csv_file = models.FileField(blank=True)
+
+    class Meta:
+        ordering = ('created', 'rows')
+        verbose_name = 'dataset'
+        verbose_name_plural = 'datasets'
+
+    @property
+    def is_ready(self):
+        return self.status == self.Status.READY
+
+    def __str__(self):
+        return (
+            f'{self.created} for {self.schema.title}'
+            f'({self.schema.user.username})'
+        )
+
+
+@receiver(post_save, sender=Dataset)
+def post_save_generate_csv(sender, instance, created, **kwargs):
+    '''
+    Generates csv for every just created Dataset object
+    '''
+    if created:
+        generate_csv(instance)

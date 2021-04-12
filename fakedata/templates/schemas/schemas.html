@@ -14,13 +14,13 @@
 
   <div class="row">
     <div class="col-9">
-      <table class="table table-bordered">
+      <table class="table">
         <thead>
           <tr>
             <th scope="col" class="text-center">#</th>
             <th scope="col">Title</th>
             <th scope="col">Modified</th>
-            <th scope="col">Handle</th>
+            <th scope="col ps-3">Handle</th>
           </tr>
         </thead>
         <tbody>
@@ -30,11 +30,11 @@
               <td>{{ obj.title }}</td>
               <td>{{ obj.modified }}</td>
               <td>
-                <a href="#" class="btn btn-sm btn-link text-decoration-none text-primary d-inline">Datasets</a>
-                <a href="{% url 'configure_schema' pk=obj.id %}" class="btn btn-sm btn-link text-decoration-none text-secondary d-inline">Configure</a>
-                <form method="POST" action="{% url 'delete_schema' pk=obj.id %}" class="d-inline">
+                <a href="{% url 'datasets' obj.id %}" class="btn btn-link text-decoration-none text-primary ps-0 d-inline">Datasets</a>
+                <a href="{% url 'configure_schema' obj.id %}" class="btn btn-link text-decoration-none text-secondary ps-0 d-inline">Configure</a>
+                <form method="POST" action="{% url 'delete_schema' obj.id %}" class="d-inline">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-sm btn-link text-decoration-none text-danger">Delete</button>
+                  <button type="submit" class="btn btn-link text-decoration-none text-danger ps-0">Delete</button>
                 </form>
               </td>
             </tr>
