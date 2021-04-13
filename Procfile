@@ -1,2 +1,2 @@
 web: gunicorn fakedata.wsgi --log-file -
-worker: celery worker --app=tasks.app
+worker: celery -A fakedata worker -l INFO
