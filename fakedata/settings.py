@@ -118,9 +118,10 @@ LOGOUT_REDIRECT_URL = '/auth/login/'
 REDIS_HOST = '0.0.0.0'
 REDIS_PORT = '6480'
 
-CELERY_BROKER_URL = 'rediss://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+
+CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://0.0.0.0:6379/0')
+CELERY_RESULT_BACKEND = os.getenv('REDIS_URL', 'redis://0.0.0.0:6379/0')
 CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
-CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
