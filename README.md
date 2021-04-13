@@ -4,39 +4,41 @@
 ## Description:
 FakeCSV is an online service for generating CSV files with fake(dummy) data.
 
-The service allows you to generate large amounts of data that you can use to test your projects.
-The generation process takes from a second to several minutes, depending on the specified parameters and the required amount of data.
+The service allows you to generate large amounts of data, which you can use to test your projects.
+Csv generation process takes from a second to several minutes, depending on the specified parameters and the required amount of data.
 
 ## Deployment:
 
 ### Heroku
 
-The project is configured for deployment on the Heroku.
-So before deployment you need to be sure, that you have an account on [Platform](https://heroku.com).
+FakeCSV is configured for deployment on Heroku.
+So before deployment you need to be sure, that you have an [account] on the platform.(https://heroku.com).
 
-Detailed instructions for setting up heroku you can find in [official Heroku guide](https://devcenter.heroku.com/articles/getting-started-with-python).
+More detail instructions for setting up heroku and apps you can find in [official Heroku guide](https://devcenter.heroku.com/articles/getting-started-with-python).
+
+#### Steps:
 
 1. `git clone` project to local repository.
 
 2. [Install](https://devcenter.heroku.com/articles/getting-started-with-python#set-up) Heroku CLI.
 
-3. Login using `heroku login`.
+3. Login via `heroku login`.
 
-4. Being in the save level with manage.py, create your heroku app through `heroku create your-app-name`.
+4. Being at the save level with manage.py, create your Heroku app - `heroku create your-app-name`.
 
-5. The project using Celery library with Redis BSD. So you need to add redis addon to your dyno before pushing the code to heroku:
-  1. [provide](https://dashboard.heroku.com/account/billing) your card information. Don't be afraid, there is no charges, if you using hobby-dev plan;
-  2. add addon to your heroku app with command `heroku addons:create heroku-redis:hobby-dev`;
+5. The project uses Celery library with Redis BSD. So you need to add redis addon to your dyno before pushing code to Heroku:
+  1. [provide](https://dashboard.heroku.com/account/billing) your card information. Don't be afraid, there is no charges if you using hobby-dev plan;
+  2. add addon to your Heroku app - `heroku addons:create heroku-redis:hobby-dev`;
   3. wait until redis addon is ready;
-  4. add to your heroku configuration next variables:
+  4. add to your Heroku app configuration next variables:
     * SECRET_KEY (your django secret key);
-    * HOST (your heroku application url).
+    * HOST (your Heroku app url).
     You can add them through `heroku config:set SECRET_KEY=<your_django_secret_key> HOST=<your_app_url>`
-    If you need to turn on django debug mode, you can also add `DEBUG=True` variable.
+    If you need django with debug mode, you can also add `DEBUG=True` variable.
 
-5. Push local project to your heroku app `git push heroku main`.
+5. Push local project to your Heroku app - `git push heroku main`.
 
-6. Create superuser `heroku run python manage.py createsuperuser`.
+6. Create superuser for project - `heroku run python manage.py createsuperuser`.
 
 Now you can open website by typing `heroku open`.
 
@@ -49,7 +51,7 @@ Now you can open website by typing `heroku open`.
 
 * write unittests
 * pack project to docker-compose
-* add multiprocessing in project
+* add multiprocessing
 * expand columns types list
 
 ## Stack
@@ -65,4 +67,5 @@ Now you can open website by typing `heroku open`.
 Evan Vilagov
 
 Linkedin: https://www.linkedin.com/in/vilagov/
+
 Email: evan.vilagov@gmail.com
