@@ -1,2 +1,1 @@
-web: gunicorn fakedata.wsgi --log-file -
-worker: celery -A fakedata worker -l INFO
+web: celery -A fakedata worker -l INFO -D; gunicorn fakedata.wsgi --log-file -
