@@ -10,7 +10,7 @@
 
 <div class="card col-6">
   <div class="card-body">
-    <form method="POST" action="{% url 'new_column' schema.id %}" enctype="multipart/form-data" id="schema-create-form" class="row">
+    <form method="POST" action="{% url 'new_column' user.username schema.id %}" enctype="multipart/form-data" id="schema-create-form" class="row">
       {% csrf_token %}
       <div class="row">
         <div class="col-9 mb-3">

@@ -149,8 +149,10 @@ class Dataset(models.Model):
 
 @receiver(post_save, sender=Dataset)
 def post_save_generate_csv(sender, instance, created, **kwargs):
-    '''
-    Generates csv for every just created Dataset object
-    '''
+    """
+    Trigger selery task to start csv generating
+    for just created Dataset object
+    """
+
     if created:
         start_generator.delay(instance.id)

@@ -4,6 +4,9 @@ runserver:
 gunicorn:
 	poetry run gunicorn fakedata.wsgi:application -b 0:8000
 
+start_worker:
+	poetry run celery -A fakedata worker -l INFO
+
 makemigrations:
 	poetry run python manage.py makemigrations
 

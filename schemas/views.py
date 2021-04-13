@@ -14,16 +14,27 @@ from django.views.generic import (
 
 from schemas.models import Schema, Column, Dataset
 from schemas.forms import SchemaForm, ColumnForm, DatasetForm
+from schemas.mixins import SchemaSuccesUrlMixin, UserIsCreatorMixin
 
 User = get_user_model()
 
 
-class IndexView(RedirectView):
-    url = reverse_lazy('schemas')
+class IndexView(LoginRequiredMixin, RedirectView):
+    """Index page mixin. Now redirects to schemas page"""
+
     permanent = False
 
+    def get_redirect_url(self, **kwargs):
+        url = reverse_lazy(
+            'schemas',
+            kwargs={'username': self.request.user.username}
+        )
+        return url
 
-class SchemaListView(LoginRequiredMixin, ListView):
+
+class SchemaListView(LoginRequiredMixin, UserIsCreatorMixin, ListView):
+    """User's schemas"""
+
     model = Schema
     template_name = 'schemas/schemas.html'
 
@@ -32,7 +43,9 @@ class SchemaListView(LoginRequiredMixin, ListView):
         return queryset.filter(user=self.request.user)
 
 
-class SchemaCreateView(LoginRequiredMixin, CreateView):
+class SchemaCreateView(LoginRequiredMixin, UserIsCreatorMixin, CreateView):
+    """Adding new schema"""
+
     model = Schema
     template_name = 'schemas/new_schema.html'
     form_class = SchemaForm
@@ -43,7 +56,10 @@ class SchemaCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class SchemaUpdateView(LoginRequiredMixin, UpdateView):
+class SchemaUpdateView(LoginRequiredMixin, UserIsCreatorMixin,
+                       SchemaSuccesUrlMixin, UpdateView):
+    """Edit schema"""
+
     model = Schema
     template_name = 'schemas/new_schema.html'
     form_class = SchemaForm
@@ -53,23 +69,22 @@ class SchemaUpdateView(LoginRequiredMixin, UpdateView):
         context['edit'] = True
         return context
 
-    def get_success_url(self):
-        pk = self.kwargs['pk']
-        success_url = reverse_lazy('configure_schema', kwargs={'pk': pk})
-        return success_url
 
+class SchemaDeleteView(LoginRequiredMixin, UserIsCreatorMixin, View):
+    """Delete schema (without confirmation)"""
 
-class SchemaDeleteView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         schema = get_object_or_404(Schema, id=kwargs['pk'])
         schema.delete()
-        return redirect('schemas')
+        return redirect('schemas', username=request.user.username)
 
     def get(self, request, **kwargs):
         return redirect('index')
 
 
-class SchemaDetailView(LoginRequiredMixin, DetailView):
+class SchemaDetailView(LoginRequiredMixin, UserIsCreatorMixin, DetailView):
+    """Schema with columns configuration"""
+
     model = Schema
     template_name = 'schemas/configure_schema.html'
 
@@ -79,7 +94,10 @@ class SchemaDetailView(LoginRequiredMixin, DetailView):
         return data
 
 
-class ColumnCreateView(LoginRequiredMixin, CreateView):
+class ColumnCreateView(LoginRequiredMixin, UserIsCreatorMixin,
+                       SchemaSuccesUrlMixin, CreateView):
+    """Create column configured on schema page"""
+
     model = Column
     form_class = ColumnForm
 
@@ -88,25 +106,34 @@ class ColumnCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        return redirect('configure_schema', pk=self.kwargs['pk'])
+        redirect_url = redirect(
+            'configure_schema',
+            username=self.request.user.username,
+            pk=self.kwargs['pk']
+        )
+        return redirect_url
 
-    def get_success_url(self):
-        pk = self.kwargs['pk']
-        success_url = reverse_lazy('configure_schema', kwargs={'pk': pk})
-        return success_url
 
+class ColumnDeleteView(LoginRequiredMixin, UserIsCreatorMixin, View):
+    """Delete column (without confirmation)"""
 
-class ColumnDeleteView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         column = get_object_or_404(Column, id=kwargs['col_pk'])
         column.delete()
-        return redirect('configure_schema', pk=kwargs['pk'])
+        redirect_url = redirect(
+            'configure_schema',
+            username=self.request.user.username,
+            pk=self.kwargs['pk']
+        )
+        return redirect_url
 
     def get(self, request, **kwargs):
         return redirect('index')
 
 
-class DatasetListView(LoginRequiredMixin, ListView):
+class DatasetListView(LoginRequiredMixin, UserIsCreatorMixin, ListView):
+    """Datasets of configured schema"""
+
     model = Dataset
     template_name = 'schemas/datasets.html'
 
@@ -122,7 +149,9 @@ class DatasetListView(LoginRequiredMixin, ListView):
         return data
 
 
-class DatasetCreateView(LoginRequiredMixin, CreateView):
+class DatasetCreateView(LoginRequiredMixin, UserIsCreatorMixin, CreateView):
+    """Create dataset, start csv generation (via Dataset post_save signal)"""
+
     model = Dataset
     form_class = DatasetForm
     template_name = 'schemas/datasets.html'
@@ -132,15 +161,25 @@ class DatasetCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        return redirect('datasets', pk=self.kwargs['pk'])
+        redirect_url = redirect(
+            'datasets',
+            username=self.request.user.username,
+            pk=self.kwargs['pk']
+        )
+        return redirect_url
 
     def get_success_url(self):
         pk = self.kwargs['pk']
-        success_url = reverse_lazy('datasets', kwargs={'pk': pk})
+        success_url = reverse_lazy(
+            'datasets',
+            kwargs={'username': self.request.user.username, 'pk': pk}
+        )
         return success_url
 
 
-class DatasetDownloadView(LoginRequiredMixin, View):
+class DatasetDownloadView(LoginRequiredMixin, UserIsCreatorMixin, View):
+    """Download dataset's csv file"""
+
     def get(self, request, **kwargs):
         dataset = get_object_or_404(Dataset, id=kwargs['ds_pk'])
         csv = dataset.csv_file
@@ -150,20 +189,18 @@ class DatasetDownloadView(LoginRequiredMixin, View):
         return redirect('datasets', pk=kwargs['pk'])
 
 
-class DatasetDeleteView(LoginRequiredMixin, View):
+class DatasetDeleteView(LoginRequiredMixin, UserIsCreatorMixin, View):
+    """Remove dataset from list"""
+
     def post(self, request, *args, **kwargs):
         dataset = get_object_or_404(Dataset, id=kwargs['ds_pk'])
         dataset.delete()
-        return redirect('datasets', pk=kwargs['pk'])
+        redirect_url = redirect(
+            'datasets',
+            username=self.request.user.username,
+            pk=self.kwargs['pk']
+        )
+        return redirect_url
 
     def get(self, request, **kwargs):
         return redirect('index')
-
-
-"""
-    ДОБАВИТЬ ПРОВЕРКУ НА ЮЗЕРА
-    (сейчас пользователь может выйти на чужие айдишники)
-    СПРЯТАТЬ SuccessUrl в МИКСИН
-    ПОЧИТАТЬ ПО ДИСПАТЧ -- это поможет
-    его нужно будет спрятать именно туда
-"""

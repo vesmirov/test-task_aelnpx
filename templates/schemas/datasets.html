@@ -6,10 +6,10 @@
 {% block content %}
   <div class="row mb-4">
     <div class="col">
-      <p class="display-6 mb-0"><a href="{% url 'configure_schema' schema.pk %}" class="text-decoration-none link-secondary">{{ schema.title }}</a>: datasets</p>
+      <p class="display-6 mb-0"><a href="{% url 'configure_schema' user.username schema.pk %}" class="text-decoration-none link-secondary">{{ schema.title }}</a>: datasets</p>
     </div>
     
-    <form method="POST" action="{% url 'new_dataset' schema.id %}" class="col row">
+    <form method="POST" action="{% url 'new_dataset' user.username schema.id %}" class="col row">
       {% csrf_token %}
       <label for="{{ form.row.id_for_label }}" class="col-sm-2 col-form-label text-end">{{ form.rows.label }}</label>
       <div class="col-2">
@@ -39,12 +39,16 @@
               <th scope="row" class="text-center">{{ forloop.counter }}</th>
               <td>{{ obj.created }}</td>
               <td>{{ obj.rows }}</td>
-              <td class="text-middle text-secondary">{{ obj.get_status_display }}</td>
+              {% if obj.is_ready %}
+                <td class="text-middle text-success fw-bold">{{ obj.get_status_display }}</td>
+              {% else %}
+                <td class="text-middle text-secondary">{{ obj.get_status_display }}</td>
+              {% endif %}
               <td>
                 {% if obj.is_ready %}
-                  <a href="{% url 'download_dataset' schema.id obj.id %}" class="btn btn-link text-decoration-none text-primary ps-0 d-inline">Download</a>
+                  <a href="{% url 'download_dataset' user.username schema.id obj.id %}" class="btn btn-link text-decoration-none text-primary ps-0 d-inline">Download</a>
                 {% endif %}
-                <form method="POST" action="{% url 'delete_dataset' schema.id obj.id %}" class="d-inline">
+                <form method="POST" action="{% url 'delete_dataset' user.username schema.id obj.id %}" class="d-inline">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-link text-decoration-none text-danger ps-0">Delete</button>
                 </form>

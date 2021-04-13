@@ -20,11 +20,11 @@
 
   <div class="row">
     {% if form.errors %}
-    {% for error in form.errors %}
-        <div class="alert alert-danger" role="alert">
-            {{ error|escape }}
-        </div>
-    {% endfor %}
+      {% for error in form.errors %}
+          <div class="alert alert-danger" role="alert">
+              {{ error|escape }}
+          </div>
+      {% endfor %}
     {% endif %}
 
     <form method="POST" enctype="multipart/form-data" id="schema-create-form">

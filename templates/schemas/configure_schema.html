@@ -10,13 +10,13 @@
       <p class="display-6 mb-0">Configure schema</p>
     </div>
     <dif class="col-3 ps-0 pe-2 text-end">
-      <a href="{% url 'datasets' schema.id %}" class="btn btn-success">Submit</a>
+      <a href="{% url 'datasets' user.username schema.id %}" class="btn btn-success">Submit</a>
     </div>
   </div>
 
   <div class="row">
     <p class="d-grid col-3 mb-1">Name</p>
-    <p class="d-grid col-2 mb-1 pe-0 text-end"><a href="{% url 'edit_schema' pk=schema.id %}" class="text-muted text-decoration-none">Edit schema</a></p>
+    <p class="d-grid col-2 mb-1 pe-0 text-end"><a href="{% url 'edit_schema' user.username schema.id %}" class="text-muted text-decoration-none">Edit schema</a></p>
   </div>
 
   <div class="card col-5 mb-3 text-muted bg-light">
@@ -75,7 +75,7 @@
                 <td></td>
               {% endif %}
               <td>
-                <form method="POST" action="{% url 'delete_column' schema.id column.id %}">
+                <form method="POST" action="{% url 'delete_column' user.username schema.id column.id %}">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-sm btn-link text-decoration-none text-danger">Delete</button>
                 </form>

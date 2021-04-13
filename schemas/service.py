@@ -23,6 +23,8 @@ FAKES = {
 
 
 def get_data(dataset):
+    """Service function, gets all necessary data from query"""
+
     data = {
         'name': f'{dataset.created.strftime("%m-%d-%Y-%H-%M-%S")}-'
                 f'{dataset.id}',
@@ -35,6 +37,8 @@ def get_data(dataset):
 
 
 def get_fake_row(columns):
+    """Service function for generating fake row"""
+
     fake_row = []
     for col in columns:
         col_params = {
@@ -47,6 +51,11 @@ def get_fake_row(columns):
 
 
 def generate_csv(dataset):
+    """
+    Generates csv file in temporary directory,
+    then saves it as File() in Dataset's object FileField
+    """
+
     data = get_data(dataset)
 
     csv.register_dialect(

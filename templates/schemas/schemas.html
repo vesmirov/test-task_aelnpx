@@ -8,7 +8,7 @@
       <p class="display-6 mb-0">Data schemas</p>
     </div>
     <dif class="col-3 ps-0 pe-2 text-end">
-      <a class="btn btn-success" href="{% url 'new_schema' %}">New schema</a>
+      <a class="btn btn-success" href="{% url 'new_schema' user.username %}">New schema</a>
     </div>
   </div>
 
@@ -30,9 +30,9 @@
               <td>{{ obj.title }}</td>
               <td>{{ obj.modified }}</td>
               <td>
-                <a href="{% url 'datasets' obj.id %}" class="btn btn-link text-decoration-none text-primary ps-0 d-inline">Datasets</a>
-                <a href="{% url 'configure_schema' obj.id %}" class="btn btn-link text-decoration-none text-secondary ps-0 d-inline">Configure</a>
-                <form method="POST" action="{% url 'delete_schema' obj.id %}" class="d-inline">
+                <a href="{% url 'datasets' user.username obj.id %}" class="btn btn-link text-decoration-none text-primary ps-0 d-inline">Datasets</a>
+                <a href="{% url 'configure_schema' user.username obj.id %}" class="btn btn-link text-decoration-none text-secondary ps-0 d-inline">Configure</a>
+                <form method="POST" action="{% url 'delete_schema' user.username obj.id %}" class="d-inline">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-link text-decoration-none text-danger ps-0">Delete</button>
                 </form>
