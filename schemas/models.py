@@ -129,7 +129,7 @@ class Dataset(models.Model):
         default=100,
         validators=[MinValueValidator(1)]
     )
-    csv_file = models.FileField(blank=True)
+    csv_file = models.FileField(blank=True, upload_to='media/csv/')
 
     class Meta:
         ordering = ('created', 'rows')

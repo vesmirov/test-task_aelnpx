@@ -64,8 +64,7 @@ def generate_csv(dataset):
         escapechar=data['string_character']
     )
 
-    # with tempfile.TemporaryFile(suffix='.csv', mode='w+') as file:
-    with open(f'{settings.MEDIA_ROOT}/tempfile.csv', 'w+') as file:
+    with tempfile.TemporaryFile(suffix='.csv', mode='w+') as file:
         writer = csv.writer(file, 'custom_dialect')
 
         titles = list(data['columns'].values_list('title', flat=True))
