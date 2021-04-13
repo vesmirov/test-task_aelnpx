@@ -1,1 +1,1 @@
-web: celery -A fakedata worker -l INFO -D; gunicorn fakedata.wsgi --log-file -
+web: celery -A fakedata worker -l INFO -D; python manage.py migrate; gunicorn fakedata.wsgi --log-file -
