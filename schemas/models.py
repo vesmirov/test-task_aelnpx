@@ -5,7 +5,8 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 
-from schemas.tasks import start_generator
+from schemas.service import generate_csv
+# from schemas.tasks import start_generator
 
 User = get_user_model()
 
@@ -129,7 +130,7 @@ class Dataset(models.Model):
         default=100,
         validators=[MinValueValidator(1)]
     )
-    csv_file = models.FileField(blank=True, upload_to='media/csv/')
+    csv_file = models.FileField(blank=True, upload_to='csv/')
 
     class Meta:
         ordering = ('created', 'rows')
@@ -155,4 +156,5 @@ def post_save_generate_csv(sender, instance, created, **kwargs):
     """
 
     if created:
-        start_generator.delay(instance.id)
+        generate_csv(instance)
+        # start_generator.delay(instance.id)
