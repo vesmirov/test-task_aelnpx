@@ -5,7 +5,7 @@
 FakeCSV is an online service for generating CSV files with fake(dummy) data.
 
 The service allows you to generate large amounts of data, which you can use to test your projects.
-Csv generation process takes from a second to several minutes, depending on the specified parameters and the required amount of data. Generation runs in the background and you can check status anytime and download the file when it's ready.
+Csv generation process takes from a second to several minutes, depending on the specified parameters and the required amount of data. It's fully background process, so you can check status anytime and download the file later, when it's ready.
 
 ## Deployment:
 
