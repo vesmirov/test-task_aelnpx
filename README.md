@@ -34,8 +34,8 @@ More detail instructions for setting up heroku and apps you can find in [officia
 
    5.3. wait until redis addon is ready;
 
-   5.4 add to your Heroku app configuration next variables: `SECRET_KEY` (your django secret key) and `HOST` (your Heroku app url).
-   You can add them through `heroku config:set SECRET_KEY=<your_django_secret_key> HOST=<your_app_url>`
+   5.4 add to your Heroku app configuration next variables: `SECRET_KEY` (your django secret key) and `HOST` (your Heroku app url).  
+   You can add them through `heroku config:set SECRET_KEY=<your_django_secret_key> HOST=<your_app_url>`  
    If you need django with debug mode, you can also add `DEBUG=True` variable.
 
 5. Push local project to your Heroku app - `git push heroku main`.
