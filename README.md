@@ -27,9 +27,13 @@ More detail instructions for setting up heroku and apps you can find in [officia
 4. Being at the save level with manage.py, create your Heroku app - `heroku create your-app-name`.
 
 5. The project uses Celery library with Redis BSD. So you need to add redis addon to your dyno before pushing code to Heroku:
+
    5.1. [provide](https://dashboard.heroku.com/account/billing) your card information. Don't be afraid, there is no charges if you using hobby-dev plan;
+
    5.2. add addon to your Heroku app - `heroku addons:create heroku-redis:hobby-dev`;
+
    5.3. wait until redis addon is ready;
+
    5.4 add to your Heroku app configuration next variables: `SECRET_KEY` (your django secret key) and `HOST` (your Heroku app url).
    You can add them through `heroku config:set SECRET_KEY=<your_django_secret_key> HOST=<your_app_url>`
    If you need django with debug mode, you can also add `DEBUG=True` variable.
