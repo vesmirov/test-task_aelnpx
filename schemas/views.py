@@ -20,7 +20,7 @@ User = get_user_model()
 
 
 class IndexView(LoginRequiredMixin, RedirectView):
-    """Index page mixin. Now redirects to schemas page"""
+    """Index page. Now redirects to schemas page"""
 
     permanent = False
 
@@ -186,7 +186,8 @@ class DatasetDownloadView(LoginRequiredMixin, UserIsCreatorMixin, View):
         if csv:
             return FileResponse(
                 csv, as_attachment=True, filename=f'set_{dataset.id}.csv')
-        return redirect('datasets', pk=kwargs['pk'])
+        return redirect(
+            'datasets', username=self.request.user.username, pk=kwargs['pk'])
 
 
 class DatasetDeleteView(LoginRequiredMixin, UserIsCreatorMixin, View):
@@ -195,12 +196,8 @@ class DatasetDeleteView(LoginRequiredMixin, UserIsCreatorMixin, View):
     def post(self, request, *args, **kwargs):
         dataset = get_object_or_404(Dataset, id=kwargs['ds_pk'])
         dataset.delete()
-        redirect_url = redirect(
-            'datasets',
-            username=self.request.user.username,
-            pk=self.kwargs['pk']
-        )
-        return redirect_url
+        return redirect(
+            'datasets', username=self.request.user.username, pk=kwargs['pk'])
 
     def get(self, request, **kwargs):
         return redirect('index')
